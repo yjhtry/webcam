@@ -1,22 +1,25 @@
-use tracing::info;
-use web_sys::HtmlVideoElement;
+mod components;
+mod devices;
+mod video_stream;
 
-pub struct VideoStream {
-    el: HtmlVideoElement,
+pub use components::*;
+pub use devices::*;
+use sycamore::reactive::{create_signal, Signal};
+pub use video_stream::*;
+
+#[derive(Debug, Clone)]
+pub struct AppState {
+    pub device_id: Signal<String>,
+    pub devices: Signal<Devices>,
 }
 
-impl VideoStream {
-    pub fn new(el: HtmlVideoElement) -> VideoStream {
-        VideoStream { el }
-    }
-
-    pub fn set_media_src(&self) {
-        let window = web_sys::window().expect("no global `window` exists");
-        let navigator = window.navigator();
-        let devices = navigator.media_devices().expect("no media devices");
-
-        info!("devices [from tracing_wasm]: {:?}", devices);
-
-        web_sys::console::log_1(&devices);
+impl AppState {
+    pub async fn new() -> AppState {
+        let device_id = create_signal("".into());
+        let devices = create_signal(Devices::load().await);
+        AppState {
+            device_id: device_id,
+            devices: devices,
+        }
     }
 }
