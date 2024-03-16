@@ -1,5 +1,6 @@
+use js_sys::wasm_bindgen::JsCast;
 use sycamore::prelude::*;
-use web_sys::Event;
+use web_sys::{Event, HtmlSelectElement};
 
 use crate::{AppState, Device};
 
@@ -17,11 +18,12 @@ pub fn Controls<G: Html>() -> View<G> {
                 class="form-select px-4 py-3 rounded-full w-64",
                 aria-label="Default select example",
                 bind:value=app_state.device_id,
-                // on:change=|e: Event| {
-                //     let target = e.target().unwrap();
-                //     let value = target.to_string();
-                //     app_state.device_id.set(value.into());
-                // }
+                on:change= move |e: Event| {
+                    let target: HtmlSelectElement = e.target().unwrap().unchecked_into();
+                    let device_id = target.value();
+
+                    app_state.device_id.set(device_id.into());
+                }
             ) {
                 Keyed(
                     iterable=video_devices,
