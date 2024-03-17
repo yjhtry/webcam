@@ -23,6 +23,10 @@ impl AppState {
         }
     }
 
+    pub fn set_dimensions(&self, (width, height): (u32, u32)) {
+        self.dimensions.set((width, height));
+    }
+
     pub fn get_width(&self) -> u32 {
         self.dimensions.get().0
     }
@@ -30,4 +34,11 @@ impl AppState {
     pub fn get_height(&self) -> u32 {
         self.dimensions.get().1
     }
+}
+
+pub fn get_screen_dimensions() -> (u32, u32) {
+    let window = web_sys::window().unwrap();
+    let width = window.inner_width().unwrap().as_f64().unwrap() as u32;
+    let height = window.inner_height().unwrap().as_f64().unwrap() as u32;
+    (width, height)
 }

@@ -1,7 +1,7 @@
 use serde_json::json;
 use sycamore::prelude::*;
 
-use crate::{AppState, Controls, Devices, VideoStream};
+use crate::{AppState, Controls, VideoStream};
 
 #[component]
 pub fn Video<G: Html>() -> View<G> {
@@ -14,8 +14,6 @@ pub fn Video<G: Html>() -> View<G> {
                 "audio": false,
                 "video": {
                     "facingMode": "environment",
-                    "width": app_state.get_width(),
-                    "height": app_state.get_height(),
                 },
             }),
             id => json!({
@@ -24,8 +22,6 @@ pub fn Video<G: Html>() -> View<G> {
                     "deviceId": {
                         "exact": id,
                     },
-                    "width": app_state.get_width(),
-                    "height": app_state.get_height(),
                 },
             }),
         };
@@ -34,19 +30,18 @@ pub fn Video<G: Html>() -> View<G> {
                 let video_stream = VideoStream::new(video);
                 video_stream.set_media_src(constraints).await;
             }
-
-            Devices::load().await;
         })
     });
+
     view! {
-        div(class="relative w-[640px]") {
+        div(class="relative group") {
             video(
                 ref=video_ref,
                 class="border border-gray-300 rounded-md",
                 width=app_state.get_width(),
                 height=app_state.get_height(),
                 autoplay=false,
-                // src="http://127.0.0.1:8888/video/video.mp4",
+                // style=format!("width: {}px; height: {}px; object-fit: fill", app_state.get_width(), app_state.get_height())
                 ) {}
 
             Controls()
