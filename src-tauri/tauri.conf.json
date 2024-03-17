@@ -4,7 +4,8 @@
     "beforeBuildCommand": "trunk build",
     "beforeDevCommand": "trunk serve",
     "devPath": "http://127.0.0.1:8080/",
-    "distDir": "dist"
+    "distDir": "dist",
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "Webcam",
@@ -55,12 +56,17 @@
     },
     "windows": [
       {
+        "title": "Webcam",
         "fullscreen": false,
+        "width": 800,
         "height": 600,
         "resizable": true,
-        "title": "Webcam",
-        "width": 800
+        "transparent": true,
+        "center": true ,
+        "alwaysOnTop": true,
+        "decorations": false
       }
-    ]
-  }
+    ],
+    "macOSPrivateApi": true
+ }
 }

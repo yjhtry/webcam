@@ -37,11 +37,10 @@ pub fn Video<G: Html>() -> View<G> {
         div(class="relative group") {
             video(
                 ref=video_ref,
-                class="border border-gray-300 rounded-md",
+                class="border border-gray-300 rounded-md object-fill",
                 width=app_state.get_width(),
                 height=app_state.get_height(),
                 autoplay=false,
-                // style=format!("width: {}px; height: {}px; object-fit: fill", app_state.get_width(), app_state.get_height())
                 ) {}
 
             Controls()

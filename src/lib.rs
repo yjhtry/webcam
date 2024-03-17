@@ -6,6 +6,7 @@ pub use components::*;
 pub use devices::*;
 use sycamore::reactive::{create_signal, Signal};
 pub use video_stream::*;
+use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, Copy)]
 pub struct AppState {
@@ -41,4 +42,11 @@ pub fn get_screen_dimensions() -> (u32, u32) {
     let width = window.inner_width().unwrap().as_f64().unwrap() as u32;
     let height = window.inner_height().unwrap().as_f64().unwrap() as u32;
     (width, height)
+}
+
+#[wasm_bindgen(module = "/glue.js")]
+extern "C" {
+    #[wasm_bindgen(js_name = setWindowDecorations)]
+    pub async fn set_window_decorations(decorations: bool);
+
 }
